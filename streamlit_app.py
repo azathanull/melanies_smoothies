@@ -1,4 +1,5 @@
 # Import python packages
+import requests
 import streamlit as st
 from snowflake.snowpark.functions import col
 
@@ -20,6 +21,10 @@ ingridients_list = st.multiselect("Choose upto 5 ingridients", my_dataframe, max
 
 if ingridients_list:
     ingredients_str = " ".join(ingridients_list)
+    for fruit in ingridients_list:
+      st.subheader(fruit + " Nutrition Information")
+      smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + fruit)
+      sf_df = st.dataframe(data = smoothiefroot_response.json(), use_container_width = True)
 
     submit = st.button("Submit Order")
 
